@@ -12,6 +12,8 @@ If ever you get the feeling that all of this is a bit too much, just remember:
 
 ![Lao Tzu](http://www.theprimalthinker.com/wp-content/uploads/2018/04/lao-tzu.jpg)
 
+Please report any fixes/errors/typos/comments as a pull request here: [https://github.com/nomadpool/Haskell-GitBook](https://github.com/nomadpool/Haskell-GitBook)
+
 P.S. If you find this guide useful and would like to help support future educational content, please considering delegating your ADA to NOMAD Pool.
 
 P.S.S. Don't worry about what a monad is; we have no idea either.
