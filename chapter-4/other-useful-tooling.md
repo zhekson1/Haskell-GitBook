@@ -1,9 +1,5 @@
 # Other Useful Tooling
 
-* Graphing
-* Compression
-* Web Scraping
-
 ### Graphing
 
 The best library we have found for plotting charts in haskell is actually matplotlib. It connects directy to python's matplotlib. For basic plotting with this library, you must first install the following packages: python3-pip, python3-matplotlib, and python3-scipy. You can install these with sudo like:
@@ -48,7 +44,7 @@ you may not see all of your graphs displayed. This is due to the way "onscreen" 
 
 ```
 import Graphics.Matplotlib
-import Control.Concurrent
+import Control.Concurrent  -- already installed
 
 graph :: IO ()
 graph = do
@@ -66,7 +62,7 @@ graph = do
 
 ### Gzip Compression of Files
 
-Add compression to files is easy. You just need the module Codec.Compression.GZip (already installed). You can find its documentation [here](https://hackage.haskell.org/package/zlib-0.6.2.3/docs/Codec-Compression-GZip.html). It can only compress ByteStrings but that means it will work with JSON and Csv files. To compress and decompress, just call "compress" after encoding and call "decompress" before decoding.
+Adding compression to files is easy. You just need the module Codec.Compression.GZip (already installed). You can find its documentation [here](https://hackage.haskell.org/package/zlib-0.6.2.3/docs/Codec-Compression-GZip.html). It can only compress ByteStrings but that means it will work with JSON and Csv files. To compress and decompress, just call "compress" after encoding (but before writing) and call "decompress" before decoding (but after reading).
 
 ### Web Scraping
 
@@ -76,9 +72,9 @@ For web scraping, we can use Text.HTML.Scalpel. Here is the [documentation](http
 *Main> r <- scrapeURL "https://iohk.io/en/blog/posts/page-1/" $ texts (tagSelector "h1") :: IO (Maybe [Text])
 ```
 
-It will return IO (Maybe \[Text]) which is why you need OverloadedStrings enabled. Notice how it returns a Maybe type since it can fail? The scrapeURL, texts, and tagSelector functions come from the module. The "h1" string we passed to tagSelector is the HTML tag for the text we wanted to scrape. The tagSelector converts our String to the Selector type for the scraper to use.
+It will return IO (Maybe \[Text]) which is why you need OverloadedStrings enabled. Notice how it returns a Maybe type since it can fail? The scrapeURL, texts, and tagSelector functions come from the Text.HTML.Scalpel module. The "h1" String we passed to tagSelector is the HTML tag for the text we wanted to scrape. The tagSelector converts our String to the Selector type for the scraper to use.
 
-What if your "h1" tag is everywhere but your "h1" tag is the only one in a "span" tag? You can combine Selectors into one by using (//) like this:
+What if the "h1" tag is everywhere in your target web page but your specific "h1" tag is the only one in a "span" tag? You can combine Selectors into one by using (//) like this:
 
 ```
 *Main> r <- scrapeURL "https://iohk.io/en/blog/posts/page-1/" $ texts (tagSelector "span" // tagSelector "h1") :: IO (Maybe [Text])
@@ -99,7 +95,7 @@ Don't worry about the return type, that is just what the "texts" function return
 TagString "h1" @: [hasClass "author"]
 ```
 
-The TagString constructor comes from the module. The type of the above line is Selector which means it can be combined with other Selectors using (//) too:
+The TagString constructor comes from the Text.HTML.Scalpel module, too. The type of the above line is Selector which means it can be combined with other Selectors using (//):
 
 ```
 withClass :: Scraper Text [Text]

@@ -1,8 +1,5 @@
 # Debugging - Part 2
 
-* Property Based Testing with QuickCheck
-* QuickCheck with your own types
-
 ### Property Based Testing with QuickCheck
 
 Let's say you created your own even function like this:
@@ -14,7 +11,7 @@ myEven x = mod x 2 == 0
 
 Is there an easy way to test this function to make sure it works as expected? Will it successfully differentiate between even and odd numbers? The only real way to test it is to just pass through a bunch of numbers and see if the results match what is expected. This is beyond tedious.&#x20;
 
-It is situations like this where property based testing comes in. We can have the compiler generate random inputs of the necessary type and test the results against a rule we specify. Let's just see it in action. Here is the rule we want to be true:
+It is in situations like this where property based testing comes in. We can have the compiler generate random inputs of the necessary type and test the results against a rule we specify. Let's just see it in action. Here is the rule we want to be true:
 
 ```
 prop_Even :: Int -> Bool
@@ -128,7 +125,7 @@ genName :: Gen String
 genName = oneof [return "Sarah",return "Tim",return "Scott"]
 ```
 
-The oneof function will randomly pick one of the elements in the list. Now you should get realistic Persons:
+The oneof function (in Test.QuickCheck) will randomly pick one of the elements in the list. Now you should get realistic names:
 
 ```
 Person "Scott" 0
@@ -175,4 +172,4 @@ genName :: Gen String
 genName = oneof [return "Sarah",return "Tim",return "Scott"]
 ```
 
-Now it will randomly generate a Person or a Dog.
+Now it will randomly generate a Person or a Dog. FYI, the Gen tag is a monad which is why we are using return to attach the tag. Tags are not only for side effects. As you progress through Haskell, you will see more examples of this.

@@ -1,18 +1,13 @@
 # Interacting with Files
 
-* Basic Text Files
-* Slight tangent: Data constructors as possible settings
-* GHC Extensions
-* JSON Files
-
 ### Basic Text Files
 
-System.IO comes pre-installed with Haskell and can be used for reading and writing to basic files. There is a lot going on in the [documentation](https://hackage.haskell.org/package/base-4.16.0.0/docs/System-IO.html) but we will walk you through the basics. Also did you figure out what the type FilePath is?
+The module System.IO comes pre-installed with Haskell and can be used for reading and writing to basic files. There is a lot going on in the [documentation](https://hackage.haskell.org/package/base-4.16.0.0/docs/System-IO.html) but we will walk you through the basics. Also did you figure out what the type FilePath is?
 
 The way file reading in Haskell works is to first create a handle and then read from or write to that handle. When finished, make sure to close the handle. The basic idea is this:
 
 ```
--- open Text.txt and prepare it for writing; if doens't exit, it will create it
+-- open Text.txt and prepare it for writing; if doesn't exist, it will create it
 *Main> handle <- openFile "Text.txt" WriteMode
 
 -- writing to the file
@@ -21,7 +16,7 @@ The way file reading in Haskell works is to first create a handle and then read 
 -- closing the file
 *Main> hClose handle
 
--- open Text.txt and prepare it for reading; file must already exit
+-- open Text.txt and prepare it for reading; file must already exist
 *Main> handle <- openFile "Text.txt" ReadMode
 
 -- read the file
@@ -40,11 +35,17 @@ When you write to the file, the contents are not actually dumped to the file unt
 *** Exception: Text.txt: hGetContents: illegal operation (delayed read on closed handle)
 ```
 
-This is Haskell's laziness in action. Don't worry, it isn't that hard to get used to.
+This is Haskell's laziness in action. As another example of laziness, if you try to write to a file before it has been fully read, you will get this error:
+
+```
+*** Exception: Test.txt: openFile: resource busy (file is locked)
+```
+
+Don't worry, it isn't that hard to get used to.
 
 The other options you can use besides ReadMode and WriteMode are AppendMode and ReadWriteMode. If you try writing to a file in ReadMode or reading from a file in WriteMode you will get an error.&#x20;
 
-Now that you know the basics, you can also use readFile, writeFile, and appendFile from System.IO too. They deal with opening and closing the handles for you. However be aware that they still use laziness. As an example usage of these functions:
+Now that you know the basics, you can also use readFile, writeFile, and appendFile from System.IO too (they are also included in Prelude). They deal with opening and closing the handles for you. However be aware that they still use laziness. As an example usage of these functions:
 
 ```
 *Main> contents <- readFile "Text.txt"
@@ -65,7 +66,7 @@ The "seq" function forces the first argument and then returns the second one. In
 
 ### Slight Tangent: Data Constructors as Options
 
-Did you notice that ReadMode, WriteMode, AppendMode, and ReadWriteMode in the documentation are all data constructors? This is common practice in Haskell. While you could use something like Int as the feature decider, there are probably more Ints than you will have in features. By creating data constructors specifically for feature selection, you can benefit from type safety without having to worry about too many possible inputs. If you also need an extra variable for one feature, you can have the corresponding data constructor contain the variable. For example:
+Did you notice that ReadMode, WriteMode, AppendMode, and ReadWriteMode in the documentation are all data constructors? This is a common practice in Haskell. While you could use something like Int as the feature decider, there are probably more Ints than you will have in features. By creating data constructors specifically for feature selection, you can benefit from type safety without having to worry about too many possible inputs. If you also need an extra variable for one feature, you can have the corresponding data constructor contain the variable. For example:
 
 ```
 data Option = AddOne | AddTwo | RaiseToPower Int -- takes an extra variable
@@ -87,7 +88,7 @@ GHC extensions are basically add-ons that can be enabled for the compiler. For e
 {-# LANGUAGE OverloadedStrings #-}
 ```
 
-These extensions should go at the top so that the compiler turns on the features prior to parsing your code. With that extension enabled, you can now use double quotes for other string-like types. You should not though that the compiler may not be able to tell what type a double quote is now since it can't just assume String. So if you get an "ambiguous type" error, just tell the compiler what type the double quotes are being used for.
+These extensions should go at the top so that the compiler turns on the features prior to parsing your code. With that extension enabled, you can now use double quotes for other string-like types. You should note though that the compiler may not be able to tell what type a double quote is now since it can't just assume String. So if you get an "ambiguous type" error, just tell the compiler what type the double quotes are being used for.
 
 When you have multiple extensions to enable, you can add them one after the other like this:
 
@@ -196,7 +197,7 @@ main = do
   B.writeFile "store.json" $ encode store
 ```
 
-The bang (!) forces the decoding to be done strictly. Now we can write to the file immediately. The reason why we couldn't use BangPatterns before was due to how many layers of laziness are involved in reading text files. The bang can only eliminate one layer of laziness. Even the B.readFile has too many layers of laziness; this would fail:
+The bang (!) on line 4 forces the decoding to be done strictly. Now we can write to the file immediately. The reason why we couldn't use BangPatterns before was due to how many layers of laziness are involved in reading text files. The bang can only eliminate one layer of laziness. Even the B.readFile has too many layers of laziness; this would fail:
 
 ```
 main :: IO ()

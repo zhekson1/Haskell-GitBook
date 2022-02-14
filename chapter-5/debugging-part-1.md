@@ -1,11 +1,8 @@
 # Debugging - Part 1
 
-* creating modules
-* using IO strategically
-
 ### Using Your Own Modules
 
-The first step to debugging is always being able to read your own code. The more organized your code is, the easier it will be to read. Creating your own modules can go a long way for keeping your code organized. Imagine if your files were organized like this in your file system:
+The first step to debugging is always being able to read your own code. The more organized your code is, the easier it will be to read. Creating your own modules can go a long way to keeping your code organized. Imagine if your files were organized like this in your file system:
 
 ```
 .
@@ -22,7 +19,7 @@ module MyModule
 (
   Foo (..)  -- how you export your data type and all its instances
   Syn       -- how you export type synonyms
-  func      -- how you export functions
+  func      -- how you export functions and variables
 ) where
 ```
 
@@ -56,13 +53,13 @@ One last tip, what if you had a second module in the Modules directory and it ne
 
 ### Using IO Strategically
 
-While the compiler is great for catching errors, it can't catch all run-time errors or logical errors (your function just doesn't behave as expected). Isolating side effects can make debugging your functions difficult, especially since most of your logic will probably be made up of pure functions. How can you easily debug pure functions?
+While the compiler is great for catching errors, it can't catch all run-time errors or logical errors (i.e. your function just doesn't behave as expected). Isolating side effects can make debugging your functions difficult, especially since most of your logic will probably be made up of pure functions. How can you easily debug pure functions?
 
 Ideally, you should print out the results of each step and see if the output is what you expect. But you can't print from pure functions. The naive approach would be to just use impure functions everywhere that way you can print after each step. The better method is to just make a copy of your pure function and make that one impure. Then you can test the impure version from GHCi. Once you find the bug, you can just fix it in the pure version. Here is an example, let's say the bug is in this function:
 
 ```
 foo :: Int -> String -> Int
-foo n xs = ...   -- does some stuff
+foo n xs = ...   -- does some stuff incorrectly
 ```
 
 We could just convert this function to an impure function like this:
@@ -70,14 +67,14 @@ We could just convert this function to an impure function like this:
 ```
 foo :: Int -> String -> IO Int
 foo x xs = do
-  ...  -- does some stuff
+  ...  -- does some stuff incorrectly
 ```
 
 but our program relied on the foo function being pure. The compiler would throw errors everywhere if we suddenly changed it to an impure function. You would need to fix these errors just to begin testing. Instead, we should do this:
 
 ```
 foo :: Int -> String -> Int
-foo n xs = ...   -- does some stuff
+foo n xs = ...   -- does some stuff incorrectly
 
 copyFoo :: Int -> String -> IO Int
 copyFoo x xs = do

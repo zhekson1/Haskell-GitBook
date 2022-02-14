@@ -1,9 +1,5 @@
 # Chapter Exercises
 
-* Github api call with readCreateProcess, convert to byteString and decode to a record
-* blockfrost.io api calls and graph with matplotlib
-* Web scraper and save past scrapes in a compressed json file; only display differing results; combine with github api calls from above using type classes
-
 ### Github Repo Latest Version
 
 Github has a nice api interface for checking the latest release of open-source software. For example, here is how to check the latest cardano-node release from the command line:
@@ -15,7 +11,7 @@ Github has a nice api interface for checking the latest release of open-source s
 Create a program to check the latest releases for your favorite open-source software using the System.Process module. Try the following:
 
 1. Include the jq pipe in the command passed to readCreateProcess
-2. Don't include the jq pipe in the command and instead convert the resulting String to ByteString  using fromString in the module [Data.ByteString.Lazy.UTF8](https://hackage.haskell.org/package/utf8-string-1.0.2/docs/Data-ByteString-Lazy-UTF8.html) (needs to be installed) and then decode the result to a record using Data.Aeson. You may need to clean up the String result from curl.
+2. Don't include the jq pipe in the command and instead convert the resulting String to ByteString  using fromString in the module [Data.ByteString.Lazy.UTF8](https://hackage.haskell.org/package/utf8-string-1.0.2/docs/Data-ByteString-Lazy-UTF8.html) (needs to be installed) and then decode the result to a record using Data.Aeson. You may or may not need to clean up the String result from curl.
 
 ### Blockfrost
 
@@ -23,7 +19,7 @@ Blockfrost is a free API service for querying things about the Cardano blockchai
 
 ### Basic Web Scraper
 
-Write a program that scrapes you favorite sources for the latest postings. The job of the scraper is only to alert you to new posts. Store the past web scrapes in a compressed JSON file. Then when new scrapes are made, compare the new scrapes to the old scrapes and only display the differences.
+Write a program that scrapes your favorite sources for the latest postings. The job of the scraper is only to alert you to new posts. Store the past web scrapes in a compressed JSON file. Then when new scrapes are made, compare the new scrapes to the old scrapes and only display the differences.
 
 Then combine your Github Repo program with this program using the following type class:
 

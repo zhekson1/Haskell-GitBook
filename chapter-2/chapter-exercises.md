@@ -50,7 +50,7 @@ data Store = Store { balance :: Double,
 
 Integrate the new data structure into your Store program and add the following features:
 
-1. At to the store's balance after a purchase is made
+1. Add to the store's balance after a purchase is made
 2. Allow the user to ask if something is in stock and check if it is
 3. Ask the user whether they are interested in movies or video games or both and only show the desired items from the catalog. The following helper functions may prove useful for this:
 
@@ -63,6 +63,8 @@ isVideoGame :: Item -> Bool
 isVideoGame (VideoGame _ _ _) = True
 isVideoGame _ = False
 ```
+
+If you don't feel ready for the challenge, you can come back to it later.
 
 ### Reading a Module's Documentation
 

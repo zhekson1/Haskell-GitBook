@@ -1,7 +1,5 @@
 # Interacting with Files - Cont.
 
-* Csv Files
-
 ### Csv Files
 
 For Csv files, we will need the Data.Csv, Data.Vector, and Data.ByteString.Lazy modules as well as the OverloadedStrings and DeriveGeneric extension. You will need to install Data.Csv (if you don't remember how, refer back to [here](../chapter-2/useful-tricks.md#installing-modules-with-cabal)). Data.Csv has its own decode and encode so if you are using it in the same source file as Data.Aeson, one of them needs to be qualified. We will use the same store example to explain the concepts:
@@ -47,12 +45,12 @@ main = do
   contents <- B.readFile "store.csv"
   let result = decode NoHeader contents :: Either String (Vector Item)
   case result of
-    (Right x) -> doSomeStuff $ fromList x
+    (Right x) -> doSomeStuff $ toList x  -- convert vector to list before passing
     (Left x) -> putStrLn $ "There was an error: " ++ x
   B.writeFile "store.csv" $ encode store
 ```
 
-What if you want a header for your csv file? This is slightly more complicated. First we will need two more instances:
+What if you want a header for your Csv file? This is slightly more complicated. First we will need two more instances:
 
 ```
 instance ToNamedRecord Item

@@ -40,7 +40,7 @@ shiftAtomX :: Atom -> Atom
 shiftAtomX (Atom e (Point x y)) = Atom e (Point (x + 1) y)
 ```
 
-So we change the x variable for Point and create a brand new Atom with it. The above function's unpacking and repacking is messy and we are only one record deep. If you nested further, you code could quickly become unapproachable. This is the general problem that Lenses try to solve. Lenses do all the unpacking and repacking for you so you can keep your code cleaner. Here is what we mean (to follow along, you will need to install the [Control.Lens](https://hackage.haskell.org/package/lens-5.1/docs/Control-Lens.html) module):
+So we change the x variable for Point and create a brand new Atom with it. The above function's unpacking and repacking is messy and we are only one record deep. If you nested further, your code could quickly become unapproachable. This is the general problem that lenses try to solve. Lenses do all the unpacking and repacking for you so you can keep your code cleaner. Here is what we mean (to follow along, you will need to install the [Control.Lens](https://hackage.haskell.org/package/lens-5.1/docs/Control-Lens.html) module):
 
 ```
 {-# LANGUAGE TemplateHaskell #-}  -- needs this extension

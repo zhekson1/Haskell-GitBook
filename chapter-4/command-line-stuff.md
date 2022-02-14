@@ -1,10 +1,5 @@
 # Command Line Stuff
 
-* Compiling to an executable binary
-* buffering differences
-* Command line arguments
-* System.Process
-
 ### Compiling to an Executable Binary
 
 The Haskell compiler is also capable of compiling your program to an executable that can be run from the terminal. Create a file "HelloTerminal.hs" and add the following to it:
@@ -70,7 +65,7 @@ main = do
   putStrLn $ "Hello " ++ name ++ "!"
 ```
 
-If you keep buffering enabled, you will need to flush the buffer after all of the putStr in your program. There are trade-offs to both but as a beginner, it is probably better to just disable buffering globally.
+If you keep buffering enabled, you will need to flush the buffer after every putStr in your program. There are trade-offs to both but as a beginner, it is probably better to just disable buffering globally.
 
 ### Command Line Arguments
 
@@ -85,7 +80,7 @@ main = do
   print args
 ```
 
-Don't forget that since you are trying to get command line arguments, you can only test this feature from the terminal with a compiled binary. In other words, you cannot test this from within GHCi. Try passing in different numbers of arguments (including none) and see what happens. For other things you can do, you can refer to the documentation for System.Environment [here](https://hackage.haskell.org/package/base-4.16.0.0/docs/System-Environment.html).
+Don't forget that since you are trying to get command line arguments, you can only test this feature from the terminal with a compiled binary. In other words, you cannot test this from within GHCi. Try passing in different numbers of arguments (including zero) and see what happens. For other things you can do, you can refer to the documentation for System.Environment [here](https://hackage.haskell.org/package/base-4.16.0.0/docs/System-Environment.html).
 
 ### Executing Terminal Commands from Withing Haskell
 
@@ -103,7 +98,7 @@ The callCommand function is the simplest. You just pass in the String for the co
 callCommand "ls | grep .hs"  -- notice how you can use piping
 ```
 
-For readCreateProcess, the CreateProcess type is rather complex. That is why the shell function is necessary. The shell function takes the String of the command you want to execute and converts it to the correct form for readCreateProcess. The String input in the type signature for readCreateProcess is the stdin; for most cases, you can just make it the empty string (""). readCreateProcess will save the results in a variable with the type IO String (it is a tagged String). Here is an example:
+For readCreateProcess, the CreateProcess type is rather complex. That is why the shell function is necessary. The shell function takes the String of the command you want to execute and converts it to the correct form for readCreateProcess. The String input in the type signature for readCreateProcess is the stdin; for most cases, you can just make it the empty string (""). The function readCreateProcess will save the results in a variable with the type IO String (it is a tagged String). Here is an example:
 
 ```
 *Main> x <- readCreateProcess (shell  "ls | grep .hs") ""
