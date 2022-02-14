@@ -1,14 +1,5 @@
 # Useful Tricks
 
-* $ and .
-* partially applied functions (buckets as functions)
-* lambda expressions
-* operators vs functions
-* record syntax
-* printf
-* installing modules with cabal
-* mapM\_ and mapM
-
 ### $ and .
 
 Parenthesis can get messy, especially when you are constantly nesting them. For example, what if we had a list of names (first and last) and wanted to only get the last initial of all the names? We could do this:
@@ -23,7 +14,7 @@ The parenthesis are starting to get messy. There is a pattern that the closing p
 map head $ map last $ map words ["Sarah Smith","Mike Johnson","John Doe"]
 ```
 
-You place the $ right where the opening parenthesis would go and the compiler will know the closing parenthesis is the end of the line. This makes nesting in Haskell much nicer since you don't need the dozens of closing parenthesis at the end of lines.
+You place the "$" right where the opening parenthesis would go and the compiler will know the closing parenthesis is the end of the line. This makes nesting in Haskell much nicer since you don't need the dozens of closing parenthesis at the end of lines.
 
 We can go further than this though. We are mapping over the same list three separate times. It would be easier if we could combine the functions head, last, and words into one function and just map once with that function. We can! By using "." we can combine (compose) functions. So our above line becomes:
 
@@ -31,7 +22,7 @@ We can go further than this though. We are mapping over the same list three sepa
 map (head . last . words) ["Sarah Smith","Mike Johnson","John Doe"]
 ```
 
-We don't need the $ anymore since we aren't feeding the result into another function. Look how much nicer that is than the first version. Also this last version is now more efficient since you only need to map over the list once. As your functions get more complex, $ and . will become your best friends.
+We don't need the $ anymore since we aren't feeding the result into another function. Look how much nicer that is than the first version. Also this last version is now more efficient since you only need to map over the list once. As your functions get more complex, $ and . will help keep them human readable.
 
 ### Partially Applied Functions
 
@@ -40,8 +31,8 @@ Since Haskell allows functions as inputs to other functions, it follows that you
 ```
 *Main> x = head . last . words  -- waiting for a list
 *Main> map x ["Sarah Smith","Mike Johnson","John Doe"]
-*Main> y = (**2)  -- exponentiation; waiting for the base
-*Main> z = (2**)  -- exponentiation; waiting for the exponent
+*Main> y = (**2)  -- Float exponentiation; waiting for the base
+*Main> z = (2**)  -- Float exponentiation; waiting for the exponent
 *Main> y 5
 *Main> z 5
 ```
@@ -60,7 +51,7 @@ For constructors that don't take anything (like True and False), they are just c
 
 ### Lambda Expressions
 
-Lambda expressions are just functions without a name. They are used when you need a temporary function for something. We use them a lot for mapping and filtering on lists. For example, (taken from [here](https://wiki.haskell.org/Anonymous\_function)) while we could do this:
+Lambda expressions are just functions without a name. They are used when you need a temporary function for something. We use them a lot for mapping and filtering on lists. For example (taken from [here](https://wiki.haskell.org/Anonymous\_function)), while we could do this:
 
 ```
 addOneList :: Num a => [a] -> [a]
@@ -92,7 +83,7 @@ The major differences between operators and functions are summarized in the tabl
 | Operator | Infix (goes between variables); defined using non-letters wrapped in parenthesis |           1 + 2 |
 | Function |               Prefix (goes before variables); defined using letters              | elem 1 \[1,2,3] |
 
-You can make operators prefix by wrapping it in parenthesis like this:
+You can make operators prefix by wrapping them in parenthesis like this:
 
 ```
 *Main> (+) 1 2
@@ -104,7 +95,9 @@ And you can make functions infix by using back-ticks (the tilde key next to the 
 1 `elem` [1,2,3]
 ```
 
-If you wanted to use partial application on functions to control the order of inputs, you would use the back-ticks. Here is an example of how to define your own operator:
+If you wanted to use partial application on functions to control the order of inputs, you could use the back-ticks (you can also use lambda expressions).&#x20;
+
+Here is an example of how to define your own operator:
 
 ```
 (-!) :: (Num a, Eq a, Ord a) => a -> a -> a -- do you understand why the constraints
@@ -164,14 +157,14 @@ data Individual = Person { fstName :: FirstName,
                         age :: Age }
 ```
 
-The nice thing about this is that you can share "key" names as long as the records are defined together with "|". If they weren't, you would have to come up with unique "keys". A word of warning though, don't accidentally use a key not found in that record; it will type check but you will get a run-time error. For example, try this:
+The nice thing about this is that you can share "key" names as long as the records are defined together with "|". If they weren't, you would have to come up with unique "keys". The reason for this is due to the type signatures. A word of warning though, don't accidentally use a key not found in that record; it will type check but you will get a run-time error. For example, try this:
 
 ```
 *Main> p = Person "Sarah" "Smith" 13
 *Main> breed p
 ```
 
-Records are one way of doing dictionaries in Haskell. And it is simple to convert records to JSON and CSV files as you will see in a later chapter.
+Records are one way of doing dictionaries in Haskell. As we will see later, it is also simple to convert records to JSON and CSV files.
 
 ### Printf
 
@@ -237,7 +230,7 @@ Depending on how adventurous you have been so far, you may have encountered an e
 map print [1,2,3,4]
 ```
 
-While you may think this should work, it will not. This is because the map function is only for mapping PURE functions and print is an IMPURE function. You can verify this by using ":t" on map in GHCi. Do you see IO anywhere in the type signature?
+While you may think this should work, it will not. This is because the map function is only for mapping PURE functions and print is an IMPURE function. You can verify this by using ":t" on map in GHCi. Do you see IO (or a Monad class constraint) anywhere in the type signature?
 
 Fear not, there are two mapping functions that are meant to be used with impure functions. They are mapM\_ and mapM. The table below summarizes the differences:
 
@@ -246,7 +239,7 @@ Fear not, there are two mapping functions that are meant to be used with impure 
 | mapM\_   |                map an impure function over a data structure and throw away the results               |
 | mapM     | map an impure function over a data structure and save the results in the same kind of data structure |
 
-To keep it simple, if you are mapping an impure function that returns IO () use mapM\_. Otherwise use mapM. It may be hard to come up with uses for mapM for now but you'll see real world examples in later chapters.
+To keep it simple, if you are mapping an impure function that returns IO () use mapM\_. Otherwise use mapM. It may be hard to come up with uses for mapM for now but it is useful for programs like web scraping where you need to scrape a list of URLs.
 
 So before when we tried mapping print over the list, we can successfully do it like this:
 

@@ -1,16 +1,8 @@
 # The Basics - Part 3
 
-* The main types: lists, tuples, strings, chars, Int, integer, float, double, rational
-* The main data structures
-* pattern matching on data structures
-* recursion
-* Type variables
-* importing modules - link to appendix
-* Read and Show
-
 ### Main Types
 
-You have already seen Int, String, and Char but there are other types includes in Prelude. The table below summarizes some of them:
+You have already seen Int, String, and Char but there are other types included in Prelude. The table below summarizes some of them:
 
 | Type     |                                            Description                                            |                           Example |
 | -------- | :-----------------------------------------------------------------------------------------------: | --------------------------------: |
@@ -89,7 +81,7 @@ foo''' :: [Int] -> Int
 foo''' (x:y:xs) = y
 ```
 
-But be careful because it may not behave how you might expect. For example, what would happen if \[1] was passed to foo'''?
+But be careful because it may not behave the way you might expect. For example, what would happen if \[1] was passed to foo'''?
 
 There are other data structures we can pattern match on but this is enough to get us started. We will see more data structures in a later chapter.
 
@@ -150,15 +142,15 @@ As you can see, xs in the pattern becomes the empty list when there is only one 
 
 ### Type Variables
 
-So far you have only see concrete types in type signatures. For instance, our myMap only works on \[Int]. But why? Shouldn't it be able to work on all lists? Yes, it should. We can make it work on all lists by changing the function type signature like this:
+So far you have only see concrete types in type signatures. For instance, our myMap only works on \[Int]. But why? Shouldn't it be able to work on all lists? Yes, it should. We can make it work on all lists by changing the function type signature to use type variables like this:
 
 ```
-myMap :: (a -> a) -> [a] -> [a]  -- using variables
+myMap :: (a -> a) -> [a] -> [a]  -- using variables; must be lowercase
 myMap f [] = []
 myMap f (x:xs) = f x : myMap f xs
 ```
 
-Now our myMap can work on a list of any type. However, the returned list must be of the same type of the input list. That is what them both being of type \[a] means. For instance, you can use myMap to convert a list of Int to a list of String. Also notice how our function input type also converts something of type a into something else of the same type. In other words:
+Now our myMap can work on a list of any type. However, the returned list must be of the same type of the input list. That is what the input and output both being of type \[a] means. For instance, you can't use myMap to convert a list of Int to a list of String. Also notice how our function input type also converts something of type a into something else of the same type. In other words:
 
 ```
 myMap :: (a -> a) -> [a] -> [a]
@@ -184,7 +176,7 @@ myMap f [] = []
 myMap f (x:xs) = f x : myMap f xs
 ```
 
-Now we can use myRead as well. Notice how the type a can be the same type as b but it doesn't need to be. Type variables are just basic algebra substitution.&#x20;
+Now we can use myRead as well. Notice how the type a can be the same type as b but it doesn't need to be. Type variables are just basic algebraic substitution.&#x20;
 
 ### Importing Other Modules
 
@@ -193,8 +185,8 @@ There are 5 ways to import modules into source files:
 ```
 import Data.Char  -- imports everything
 
-import Data.Char hiding (isDigit,toUpper)  -- imports everything except isDigit
-                                           -- and toUpper
+import Data.Char hiding (isDigit,toUpper)  {- imports everything except isDigit
+                                              and toUpper -}
                                            
 import Data.Char (isDigit,toUpper)  -- only imports isDigit and toUpper
 
@@ -203,7 +195,7 @@ import Data.Char as C  -- allows prefixing functions and types from this with "C
 import qualified Data.Char as C  -- forces prefixing with "C."
 ```
 
-You can combine the selective import methods with the prefixing ones. That's pretty much it for importing modules. If you module has function names that class with yours, try hiding those functions or prefixing them. As an example of what we mean by prefixing, this is how to call toUpper using the prefix:
+You can combine the selective import methods with the prefixing ones. That's pretty much it for importing modules. If your module has function names that clash with yours, try hiding those functions or prefixing them. As an example of what we mean by prefixing, this is how to call toUpper using the prefix:
 
 ```
 C.toUpper 'a'
@@ -211,7 +203,7 @@ C.toUpper 'a'
 
 ### Show and Read
 
-show converts any type to a String and read converts a String to another type. The one constraint is that the compiler needs to know how to do this. For all the types and data structures included in Prelude, the compiler can use show and read. As an example of how to use them, here is a new hello function that uses some of the functions we have defined:
+The show function converts any type to a String and the read function converts a String to another type. The one constraint is that the compiler needs to know how to do this for that type. For all the types and data structures included in Prelude, the compiler knows how to use show and read. As an example of how to use them, here is a new hello function that uses read and some of the functions we have defined:
 
 ```
 newHello :: IO ()
@@ -226,7 +218,7 @@ newHello = do
     old <- getLine
     putStrLn (period old)
   where isPalindrome x = palindrome x 
-        period x = age (read x)
+        period x = age (read x)   -- read is used here
 ```
 
 Since the function age in line 13 expects an Int, we did not need to tell read what type to convert x to; the compiler is smart enough to figure it out. However this is not always the case. If the compiler alerts you to an "ambiguous type" (which means it doesn't know what to convert the String to), try telling it what type to use like this:

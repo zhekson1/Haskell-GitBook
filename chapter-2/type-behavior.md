@@ -1,10 +1,5 @@
 # Type Behavior
 
-* deriving
-* type classes
-* constraining behavior
-* print function
-
 ### Deriving Default Behavior
 
 When you first create a new type with the "data" key word, while you can pattern match on it, you can't do much else. You can't print it, you can't do equality checks, you can't order them, etc. It is best to see this in action. In a source file, add the Individual type from the last section and load it into GHCi. Here it is again for convenience:
@@ -56,7 +51,7 @@ FYI, for Sum types (either/or), the one defined first is always seen as less tha
 
 ### Custom Behavior
 
-To create custom behavior, you need to understand a bit about type classes first. Classes in Haskell are nothing like classes in other languages. The basic idea for Haskell classes is this: I want my function to behave differently depending on what the input type is. That's it. Whenever you want a function to behave differently depending on the input type, you can create a type class. As an example, the Show class just has the function show. Here is how it is defined:
+To create custom behavior, you need to understand a bit about type classes. Classes in Haskell are nothing like classes in other languages. The basic idea for Haskell classes is this: I want my function to behave differently depending on what the input type is. That's it. Whenever you want a function to behave differently depending on the input type, you can create a type class. As an example, the Show class just has the function show. And yet the conversion from String to a type is unique for each type. Here is how the Show class is defined:
 
 ```
 class Show a where
@@ -66,14 +61,14 @@ class Show a where
 The a in line 1 is the same a in line 2. We just do algebraic substitution once a type becomes a member of the class. We can make a type a member like this:
 
 ```
-instance Show Individual where
+instance Show Individual where  -- the a is now set to Individual
   show (Person fst lst age) = "Person: " ++ fst ++ " " ++ lst ++ "\nAge: " ++ show age
   show (Dog name breed age) = name ++ " the " ++ breed ++ "\nAge: " ++ show age
 ```
 
 To use this, make sure to remove the deriving Show; you can't both derive a class and have an instance for it. Add the instance to your source file and try printing the variables from before. They should be different. We did not need to define the type signature for show since it is defined in the class Show. The Individual type get substituted in for a so the type of show in our instance is Individual -> String.
 
-For other classes already included in Prelude, when you create the custom instances, only a subset of the functions in the class need to be defined; the rest of the functions derive their behavior from the subset. For example, to create an Eq instance, only (==) or (/=) needs to be defined even though they are both functions in the Eq class. The reason for this is that the other can be derived from the one you create. Here is how a custom Eq instance might look:
+For other classes already included in Prelude, when you create the custom instances, only a subset of the functions in the class needs to be defined; the rest of the functions derive their behavior from the subset. For example, to create an Eq instance, only (==) or (/=) needs to be defined even though they are both functions in the Eq class. The reason for this is that the other can be derived from the one you create. Here is how a custom Eq instance might look:
 
 ```
 instance Eq Individual where
@@ -140,13 +135,13 @@ This function should work on all numbers. But the type signature still allows fo
 Luckily, fixing this is easy:
 
 ```
-addThenDouble :: Num a => a -> a -> a  -- this is the syntax
+addThenDouble :: Num a => a -> a -> a  -- this is the syntax; same as above
 addThenDouble x y = (x + y)*2
 ```
 
-The above type signature says that the type variable a MUST also be a member of the Num class. Notice how the syntax is the same as with the class definition constraint for Ord. This rules out String and lists now but still allows the function to be using with Int, Float, Double, etc. You can think of this as another way of adding a function to a class definition like how the show function is in the Show class definition.
+The above type signature says that the type variable a MUST also be a member of the Num class. Notice how the syntax is the same as with the class definition constraint for Ord. This rules out String and lists now but still allows the function to be used with Int, Float, Double, etc. You can think of this method as another way of adding a function to a class definition like how the show function is in the Show class definition.
 
-Why would you prefer this method over adding the function to the type class definition? To potentially make your program more concise. Let's say we added addThenDouble to the Num class when the class was created like this (don't do this since you will shadow the real Num class):
+Why would you prefer this method over actually adding the function to the type class definition? To potentially make your program more concise. Let's say we added addThenDouble to the Num class when the class was created like this (don't do this since you will class with the real Num class):
 
 ```
 class Num a where
@@ -176,7 +171,7 @@ instance Num Double where
 {- etc -}
 ```
 
-The function declaration for addThenDouble is the same for every member of the class. Adding it to the class definition forces us to repeat the code for every member of the class. On the other hand, by creating the function outside of the class definition and just constraining it with the class, we only need to write the function 's type signature once.
+The function declaration for addThenDouble is the same for every member of the class. Adding it to the class definition forces us to repeat the code for every member of the class. On the other hand, by creating the function outside of the class definition and just constraining it with the class, we only need to write the function once.
 
 Here is a good rule of thumb: if you want the same behavior for EVERY member of a class, create the function outside the class definition and constrain it. If not, you will need to add the function to the class definition and create instances for every member.
 
@@ -227,4 +222,4 @@ print :: Show a => a -> IO ()
 print x = putStrLn (show x)
 ```
 
-You can confirm this by using ":t" on print in GHCi. As you can see, print can only be used on types that are members of the Show class. All of the types from Chapter 1 are members of the Show class. When you create your own data types, you will need to make them members of the Show class by creating Show instances in order to be able to print them with the print function.
+You can confirm this by using ":t" on print in GHCi. As you can see, print can only be used on types that are members of the Show class. All of the types from Chapter 1 are members of the Show class. When you create your own data types, you will need to make them members of the Show class by creating Show instances in order to be able to print them with the print function. Also when you call a variable by itself in GHCi, it assumes you mean "apply print to this variable".

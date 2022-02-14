@@ -1,12 +1,5 @@
 # Creating Types
 
-* Type synonyms
-* your own data types
-* Your own data types cont.
-* types that take variables
-* Recursive Types
-* Pause
-
 ### Type Synonyms
 
 Let's say you had a function that took a price and a wallet balance and returned whether you had enough money to buy the item. Your function could like like this:
@@ -18,7 +11,7 @@ haveEnough price balance
   | otherwise = True
 ```
 
-The only potential drawback is that if you only look at the type signature, it isn't clear what this function is doing. It would be much better to able to glance at the type signature and get a basic idea of what the function is doing.
+The only potential drawback is that if you only look at the type signature, it isn't clear what this function is doing. It would be much better to be able to glance at the type signature and get a basic idea of what the function is doing.
 
 We can make the type signature more descriptive by using type synonyms. A type synonym you have already seen is String. You can use String and \[Char] interchangeably throughout your program. We can easily create our own type synonyms using the "type" key word like this:
 
@@ -31,7 +24,7 @@ type CanBuy = Bool
 Now with these synonyms in scope, we can change our haveEnough function to this:
 
 ```
-haveEnough :: Price -> Float -> CanBuy  -- this is more descriptive
+haveEnough :: Price -> Balance -> CanBuy  -- this is more descriptive
 haveEnough price balance
   | price > balance = False
   | otherwise = True
@@ -114,14 +107,14 @@ type Breed = String
 data Individual = Person FirstName LastName Age | Dog PetName Breed Age
 ```
 
-Now our Individual type can either be a Person with a first name, last name, and age OR a dog with a name, breed, and age. The fact that Haskell has the option for "either/or" and "and" in data types eliminates a lot of mess found in other languages. FYI, the technical name for "either/or" and "and" types are Sum and Product types, respectively.
+Now our Individual type can either be a Person with a first name, last name, and age OR a Dog with a name, breed, and age. The fact that Haskell has the option for "either/or" and "and" in data types eliminates a lot of mess found in other languages. FYI, the technical name for "either/or" and "and" types are Sum and Product types, respectively.
 
 ### Types That Take Variables
 
 What we have seen so far are constant types (i.e. they don't change from context to context). However, it is possible for a data type to take another type as input too. For example:
 
 ```
-data Foo a = FooConst a
+data Foo a = FooConstr a
 ```
 
 Now when we use this type, we pass the type for a in the function's type signature like this:
@@ -138,7 +131,7 @@ fooFunc' :: Foo a -> a
 fooFunc' (FooConst x) = x
 ```
 
-Both are valid. Just make sure to include the type input if you are using a type that takes an input. To help illustrate this, let's see two data types included in Prelude that take input. The first one is the Maybe type and is defined like this:
+Both are valid. Just make sure to include the type input variable if you are using a type that takes an input. To help illustrate this, let's see two data types included in Prelude that take input. The first one is the Maybe type and is defined like this:
 
 ```
 data Maybe a = Nothing | Just a
@@ -146,7 +139,7 @@ data Maybe a = Nothing | Just a
 
 The Maybe type is used when a process can fail. The Nothing constructor is used in place of nulls in other languages. If the process succeeds, the result is returned inside a Just bucket.&#x20;
 
-The other type to see is also used if a process can fail. The type is the Either type and is defined like this:
+The other type to see is also used if a process can fail. It is the Either type and is defined like this:
 
 ```
 data Either a b = Left a | Right b  -- notice how it takes two inputs
@@ -172,4 +165,4 @@ Remember that recursion just means it calls itself until a termination case is r
 
 ### Pause and Reflect
 
-Don't worry if you don't understand all of this. The only concepts you need to understand right now are type synonyms and declaring your own constant sum and product types. The rest of the concepts was just so that you are aware of them. Also if you haven't noticed by now, all type names and data constructors start with a capital letter while all all functions and variables start with a lower case.&#x20;
+Don't worry if you don't understand all of this. The only concepts you need to understand right now are type synonyms and declaring your own constant sum and product types. The rest of the concepts are just so that you are aware of them. Also as a reminder, all type names and data constructors start with a capital letter while all all functions and variables start with a lower case letter.&#x20;

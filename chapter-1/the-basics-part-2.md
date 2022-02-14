@@ -1,13 +1,8 @@
 # The Basics - Part 2
 
-* Conditionals and the basic equality functions
-* Purity and ghci's :t&#x20;
-* getting user input
-* local variables
-
 ### Conditionals
 
-There are three ways of doing conditionals in Haskell. The first way is the typical if-then-else. If-then-elses operate similarly in Haskell as they do in other languages. The only differences are there are no elifs and elses are necessary. The necessity of elses come from the requirement that all Haskell functions must return something. Without the else, nothing would be returned in the case of a false predicate. Here is myRead from the last section that uses if-then-else instead of pattern matching:
+There are three ways of doing conditionals in Haskell. The first way is the typical if-then-else. If-then-elses operate similarly in Haskell as they do in other languages. The only differences are: there are no elifs and elses are necessary. The necessity of elses come from the requirement that all Haskell functions must return something. Without the else, nothing would be returned in the case of a false predicate. Here is myRead from the last section that uses if-then-else instead of pattern matching:
 
 ```
 myRead' :: Int -> String
@@ -20,13 +15,13 @@ myRead' x =
                       else "I can't count that high..."
 ```
 
-Notice the significant spaces. The corresponding if, then, elses must be at the same level of indentations. As you can see, the pattern matching method is nicer. Whenever you have several predicates to test, it is probably better to use one of the other methods.
+Notice the significant spaces. The corresponding if, then, elses must at least be at the same level of indentations. As you can see, the pattern matching method is nicer. Whenever you have several predicates to test, it is probably better to use one of the other methods.
 
-The next method to cover is called guards. Guards use pattern matching with predicates. Here is the myRead again using guards (the pipe operator "|"):
+The next method to cover is called guards. Guards use pattern matching with predicates. Here is myRead again using guards (the pipe operator "|"):
 
 ```
 myRead'' :: Int -> String
-myRead'' x    -- notice how there is no "=" here
+myRead'' x      -- notice how there is no "=" here
   | x == 0    = "0"
   | x == 1    = "1"
   | x == 2    = "2"
@@ -139,7 +134,7 @@ getLine :: IO String -- gets a line from input
 getChar :: IO Char -- gets a single Char from input
 ```
 
-The () is the unit type for Haskell functions. Sometimes you have nothing to return (like after you print to the terminal) but since Haskell requires something to be returned, the unit type is used. Notice how IO is part of the output for all of these functions. The IO is basically the tag for side effects. If a functions outputs something with IO, it uses side effects and is thus impure. Otherwise, it is pure. If you come across a function and you are unsure of its purity, you can use ":t" in GHCi and have GHCi tell you the type signature like this:
+The () is the unit type for Haskell functions. Sometimes you have nothing to return (like after you print to the terminal) but since Haskell requires something to be returned, the unit type is used. Notice how IO is part of the output for all of these functions. The IO is basically the tag for side effects. If a function outputs something with IO, it uses side effects and is thus impure. Otherwise, it is pure. If you come across a function and you are unsure of its purity, you can use ":t" in GHCi and have GHCi tell you the type signature like this:
 
 ```
 *Main> :t getLine
@@ -165,9 +160,9 @@ hello = do     -- notice the do
   putStrLn greeting
 ```
 
-In the hello function, we begin the function with "do" on line 2. The do is required to use the beginner friendly method for dealing with monads (the IO Tag). Then the first thing we do is print the String asking for the name. The putStrLn function only works on String so don't try to print an Int with it. If you want to, you can try replacing putStrLn with putStr to see the difference. Don't forget the types signature for putStr is the same as putStrLn which means you can't use non-String types with it too. The last thing to note here is that the very last function in the do block must output the same type as the parent function, which in this case is IO (). In case you need to, there is also a "return" function that will take any pure input and tag it with a monad. So the last function above could have just been "return ()".&#x20;
+In the hello function, we begin the function with "do" on line 2. The do is required to use the beginner friendly method for dealing with monads (the IO Tag). Then we print the String asking for the name. The putStrLn function only works on String so don't try to print an Int with it. If you want to, you can try replacing putStrLn with putStr to see the difference. Don't forget the type signature for putStr is the same as putStrLn which means you can't use non-String types with it either. The last thing to note here is that the very last function in the do block must output the same type as the parent function, which in this case is IO (). In case you need it, there is also a "return" function that will take any pure input and tag it with a monad. So the last function above could have just been "return ()".&#x20;
 
-Lines 4 and 5 are both declaring local variables but doing it differently. The difference has to do with getLine being impure while greetings is pure. Since the result of getLine is tagged by IO, we need to get passed the tag to use the String tagged by the IO. The left facing arrow is how we do that. When we declare a local variable based on a pure function, we use "let" followed by the variable name and the equal sign.
+Lines 4 and 5 are both declaring local variables but doing it differently. The difference has to do with getLine being impure while greeting is pure. Since the result of getLine is tagged by IO, we need to get passed the tag to use the String tagged by the IO. The left facing arrow is how we do that. When we declare a local variable based on a pure function, we use "let" followed by the variable name and the equal sign.
 
 Finally, we print the results in line 6. Notice how the hello function has a similar feel to writing a python function (minus the impure/pure variable differences). Add the above two functions to Chapter1.hs, reload GHCi, and try them out. The hello function doesn't take any input so it can be called like this:
 
@@ -206,9 +201,9 @@ Failed, no modules loaded.
 
 The error occurs because the function greet expects String but got a String tagged with IO. This is what happens if you try to mix impure functions with pure functions. The tagging in Haskell forces you to explicitly think about the side effects. Go ahead and change the hello function back to using the left facing arrow.
 
-Also an important note, while we can call pure functions from within impure functions, the reverse is not true. The predictability of Haskell comes from the pure functions. Side effects are the only things that can mess with the predictability. For this reason, it good practice to try to isolate side effects from your code as much as possible by having separate pure functions as opposed to local functions (which you will see next).
+Also an important note, while we can call pure functions from within impure functions, the reverse is not true. The predictability of Haskell comes from the pure functions. Side effects are the only things that can mess with the predictability. For this reason, it is good practice to try to isolate side effects from your code as much as possible by having separate pure functions as opposed to local functions within impure parent functions (which you will see next).
 
-### Local Variables
+### Locals
 
 We just saw two methods for declaring local variables in impure functions using let and the left facing arrow. But there are more than just those two and there are methods that work within pure functions as well.
 
@@ -241,7 +236,7 @@ addThenDouble x = (add x) * 2  -- we pass the x to the local function add
 
 Just make sure your variable names don't overlap with the parent function's. When you define local functions, the local function's type signature is derived from the parent function's type signature. So since we passed the variable x to add, the compiler knows that add has the type signature of Int -> Int as well. This means the compiler can help you check local variables and functions for errors too.&#x20;
 
-An important note, you cannot defined local variables with the left facing arrow using where. This means impure variables must be set like in the hello function. Only pure variables can be set with where. Don't confuse this for meaning that where cannot be used in impure functions; that isn't true. For example, here is the hello function from before using where:
+An important note, you cannot defined local variables with the left facing arrow using where. This means impure variables should be set like in the hello function. Only pure variables can be set with where. Don't confuse this for meaning that where cannot be used in impure functions; that isn't true. For example, here is the hello function from before using where:
 
 ```
 hello :: IO ()
@@ -252,7 +247,7 @@ hello = do
   where greeting y = greetings y    -- right here
 ```
 
-An important note when using where, only the variables set in the parent function declaration are "in scope" for where. For example, we could have written our addThenDouble function like this:
+Another important note when using where, only the variables set in the parent function declaration are "in scope" for where. For example, we could have written our addThenDouble function like this:
 
 ```
 addThenDouble :: Int -> Int
@@ -269,12 +264,12 @@ addThenDouble x = double  -- we can just call double here
         double = add * 2   -- this uses the add local variable
 ```
 
-The second method for declaring multiple variables that works for both pure and impure functions is let-in. Here is addThenDouble using let-in:
+Enough with where. The second method for declaring multiple variables that works for both pure and impure functions is let-in. Here is addThenDouble using let-in:
 
 ```
 addThenDouble' :: Int -> Int
 addThenDouble' x = let add y = y + 4
-                   in (add x) * 2   -- make sure in is indented the same as let
+                   in (add x) * 2 -- make sure in is indented at least the same as let
 ```
 
 Just as with the where, the left facing arrow doesn't work with let-in. You can define multiple variables similarly too:

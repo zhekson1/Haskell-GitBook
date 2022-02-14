@@ -12,7 +12,7 @@ Write your own version of the following functions (make sure to use a different 
 6. tail :: \[a] -> \[a]
 7. filter :: (a -> Bool) -> \[a] -> \[a]
 8. zipWith :: (a -> a -> b) -> \[a] -> \[a] -> \[b]
-9. length :: \[a] -> Int
+9. length :: \[a] -> Int   -- Hint: local functions can take more inputs than the parent; use a local counter
 10. even :: Int -> Bool
 11. odd :: Int -> Bool
 12. not :: Bool -> Bool
@@ -21,7 +21,7 @@ Write your own version of the following functions (make sure to use a different 
 
 ### Collatz Conjecture
 
-The collatz conjecture simply stated is: if the number is even then divide by two, else triple it and add one. Then reapply the collatz to the new number. Write a collatz function that will keep applying this rule until 1 is reached. To divide an Int, you will need the "div" function from prelude. Aggregate the results into a list so that you can see the full evolution of the number. For example:
+The collatz conjecture simply stated is: if the number is even then divide by two, else triple it and add one. Then reapply the collatz to the new number. Write a collatz function that will keep applying this rule until 1 is reached (it will always reach 1). To divide an Int, you will need the "div" function from Prelude. Aggregate the results into a list so that you can see the full evolution of the number. For example:
 
 ```
 collatz 7 => [7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1]
@@ -57,7 +57,7 @@ vowels "Hello World" => 3
 
 ### Caesar Cipher
 
-The caesar cipher shifts each letter in a message by a key. For example, if the key was 2, the message "apple" would become "crrng". The 'a' was shifted 2 places to 'c' and so on. Write a function that takes a message and a key and returns the encrypted message. You can either limit the possible letters to the alphabet or you can use "chr" and "ord" in Data.Char to convert a letter to the ascii code and then back after making a translation. You can use the function "mod" from Prelude to do modular arithmetic so that you can wrap around the end of the possible letters (not all ascii codes are printable characters).
+The caesar cipher shifts each letter in a message by a key. For example, if the key was 2, the message "apple" would become "crrng". The 'a' was shifted 2 places to 'c' and so on. Write a function that takes a message and a key and returns the encrypted message. You can either limit the possible letters to the alphabet or you can use "chr" and "ord" from Data.Char to convert a letter to the ascii code and then back after making a translation. You can use the function "mod" from Prelude to do modular arithmetic so that you can wrap around the end of the possible letters (not all ascii codes are printable characters).
 
 ### Program Menu
 
@@ -73,8 +73,8 @@ Write a recursive display function that takes a \[String] and displays each item
 
 **Hint 2:** Your termination case should probably execute "return ()" since there is nothing to do.
 
-**Hint 3:** You can define local impure functions with where by using "do" how you normally would.
+**Hint 3:** You can define local impure functions with where by using "do" like how you normally would.
 
 ### User Input
 
-For the collatz conjecture, nth fib, vowels, and cipher create corresponding impure functions to get user input and display the results to the terminal. To print things other than String to the terminal, you can use the function "print" from Prelude. Use your program menu from the previous exercise.
+For the collatz conjecture, nth fib, vowels, and cipher create corresponding impure functions to get user input and display the results to the terminal. To print things other than String to the terminal, you can use the function "print" from Prelude. After that, try combining the impure functions into one by using your program menu from the previous exercise.

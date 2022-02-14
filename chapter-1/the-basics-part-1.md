@@ -1,17 +1,5 @@
 # The Basics - Part 1
 
-* comments -- to be used extensively in this guide
-* significant white spaces
-* camelCase
-* calling functions with variables
-* loading a source file into ghci
-* basic functions and function type signatures
-* reloading your source file
-* type safety
-* functions as variables to other functions
-* pattern matching basics
-* Organizing the source file
-
 ### Comments
 
 Just like in other languages, there are two different types of comments in Haskell. The first type is the one line comment which starts with "--". The one line comment does not need to start at the edge of the file. Here are some example one line comments in Haskell:
@@ -36,7 +24,7 @@ Haskell uses white spaces instead of curly brackets to determine the scope of fu
 
 ### camelCase
 
-Functions and variable names follow the camelCase standard. You can separate words with the underscore but most people use camelCase.
+Haskell uses the camelCase naming standard. You can separate words with the underscore but most people use camelCase. Functions and variables start with lowercase letters while type names are capitalized.
 
 ### Calling Functions with Variable
 
@@ -73,7 +61,7 @@ You have successfully loaded your first Haskell source file! When a source file 
 
 You may be intimidated by the thought of Haskell's type system if this is your first time seeing it. However, the concepts are really quite simple. If you did well with high school algebra, this should be pretty easy.
 
-All Haskell functions return one thing. So when you see a function's type signature, the last type is the output while all the other types are the inputs. Here are some examples:
+_**All Haskell functions must return one, and only one, thing.**_ So when you see a function's type signature, the last type is the output while all the other types are the inputs. Here are some examples:
 
 ```
 constantString :: String -- this is the function's type signature
@@ -112,7 +100,7 @@ Now that your source file has been reloaded, you should now be able to call our 
 *Main> twoInputString "Input1" "Input2" -- notice how the inputs are separated with a space
 ```
 
-The above should code should work just fine. But what happens if we pass in input of a type other than String?
+The above code should work just fine. But what happens if we pass in input of a type other than String?
 
 ```
 *Main> oneInputString (1 :: Int) -- we tell ghci what type the literal 1 is
@@ -130,7 +118,7 @@ Here is the error we get:
       In an equation for ‘it’: it = oneInputString (1 :: Int)
 ```
 
-The first bullet tells us what happened: the function expected a String but got an Int instead. In Haskell, String is a list of Char so String and \[Char] are synonyms. The function didn't even execute because the type system caught the bad input. If you have an error like this in your source file, the compiler will alert you to the error when you reload the source file (we will see an example of this a bit later). The compiler will be your best friend for debugging; it is as simple as reloading your source file.
+The first bullet tells us what happened: the function expected a String but got an Int instead. In Haskell, String is a list of Char so String and \[Char] are type synonyms. The function didn't even execute because the type system caught the bad input. If you have an error like this in your source file, the compiler will alert you to the error when you reload the source file (we will see an example of this a bit later). The compiler will be your best friend for debugging; it is as easy as reloading your source file.
 
 ### Functions as Inputs to Other Functions
 
@@ -197,7 +185,7 @@ If you tried line 4, you would have gotten this error:
 "*** Exception: Chapter1.hs:(20,1)-(24,14): Non-exhaustive patterns in function myRead
 ```
 
-Non-exhaustive patterns are one of the few run-time errors that can still occur in Haskell. It would be really annoying to have to add a myRead for ever number. Thankfully, Haskell allows us to use underscores as a catchall like this:
+Non-exhaustive patterns are one of the few run-time errors that can still occur in Haskell. It would be really annoying to have to add a myRead for every number. Thankfully, Haskell allows us to use underscores as a catchall like this:
 
 ```
 myRead :: Int -> String
@@ -223,6 +211,6 @@ myRead 4 = "4"
 
 If you reload the above into GHCi, the compiler will give you a hint.
 
-### Organizing the Source File
+### Order in the Source File
 
 The order of functions in your source file do not matter. You can use a function before it is defined in the file. Everything gets compiled together so the compiler will be able to figure it all out.

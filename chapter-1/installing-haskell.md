@@ -1,8 +1,5 @@
 # Installing Haskell
 
-* ghcup
-* GHCi
-
 ### Installing the Developer Environment
 
 Installing Haskell is pretty straight forward thanks to [ghcup](https://www.haskell.org/ghcup/). You do not need to be root user to install Haskell with it and it will tell you what packages are needed on your computer (these packages will need to be installed by the root user). Make sure curl is installed on your system and then execute the following from your non-root terminal:

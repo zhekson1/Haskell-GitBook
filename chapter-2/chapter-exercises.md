@@ -9,12 +9,12 @@ Change the Show instance for Individual and make it use printf.
 You've been assigned the task of adding up all of the students in a given state. You'll be given an input of the form \[\[NumberOfStudents]] where the outer list represents all the schools and the inner list represents the number of students in that school. But someone screwed up and didn't tell you what type the list will be. You know it will be whole numbers but will it be \[\[Int]] or \[\[Integer]]? Write a function sumStudents that returns the total number of students but will only work on \[\[Int]] and \[\[Integer]]. Solve the problem using two different ways:
 
 1. Create a WholeNumber class with the function and make Int and Integer members of the class.&#x20;
-2. Create a WholeNumber class that is empty (there are no functions), make Int and Integer members of the class, and then write a function that uses the class as a constraint. To use write empty classes and make types members of this empty class, you do:
+2. Create a WholeNumber class that is empty (there are no functions), make Int and Integer members of the class, and then write a function that uses the class as a constraint. To write empty classes and make types members of this empty class, you do:
 
 ```
-class WholeNumber a -- there where is not needed when there is nothing to follow
+class WholeNumber a    -- there where is not needed when there is nothing to follow
 
-instance WholeNumber Int  -- the where is not needed when there is nothing to follow
+instance WholeNumber Int    -- the where is not needed when there is nothing to follow
 instance WholeNumber Integer
 ```
 
@@ -31,13 +31,15 @@ You run a store that sells either books with an author, title, and price or a vi
 
 You must create a data structure that represents an Item and you must create a reasonable Show instance for it (it must be user presentable). For now, you will need to hard code a starting catalog.
 
-**Hint 1**: you can represent your store as the type \[Item] and then print the whole catalog using:
+**Hint 1**: you can represent your store catalog as the type \[Item] and then print the whole catalog using:
 
 ```
 mapM_ print <catalog>
 ```
 
 **Hint 2:** in order to filter out a bought item from the catalog, you will need to do an equality check.
+
+**Hint 3**: since Haskell is immutable, you will need to create a brand new store variable whenever updates are made.
 
 **Extra Challenge:** Represent your store like this (yes you can nest records):
 
@@ -46,10 +48,11 @@ data Store = Store { balance :: Double,
                      inventory :: [Item] } 
 ```
 
-Integrate the new data structure into your Store program. Also add the following features:
+Integrate the new data structure into your Store program and add the following features:
 
-1. Allow the user to ask if something is in stock and check if it is
-2. Ask the user whether they are interested in movies or video games or both and only show the desired items from the catalog. The following helper functions may prove useful for this:
+1. At to the store's balance after a purchase is made
+2. Allow the user to ask if something is in stock and check if it is
+3. Ask the user whether they are interested in movies or video games or both and only show the desired items from the catalog. The following helper functions may prove useful for this:
 
 ```
 isMovie :: Item -> Bool
