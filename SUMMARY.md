@@ -27,3 +27,4 @@
 * [Capstone](capstone/README.md)
   * [Two More Concepts](capstone/two-more-concepts.md)
   * [The Investment Club](capstone/the-investment-club.md)
+* [Next Steps](next-steps.md)
