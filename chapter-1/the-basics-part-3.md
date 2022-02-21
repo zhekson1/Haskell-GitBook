@@ -68,7 +68,7 @@ foo :: [Int] -> Int
 foo [x,y,z,a] = z   -- same idea as with tuples; this matches a list of length 4
 
 foo' :: [Int] -> Int
-foo' (x:xs) = x    -- this pattern uses the (:) function
+foo' (x:xs) = x    -- this pattern uses the (:) operator
 
 foo'' :: [Int] -> [Int]  -- this type is different
 foo'' (x:xs) = xs
