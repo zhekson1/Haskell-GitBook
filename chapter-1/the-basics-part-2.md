@@ -217,7 +217,7 @@ palindrome xs = xs == xs'
 
 Since the scope of functions is determined by indentation, the where and the local variables must be indented further than the parent function.
 
-You can have more than one variable created with where. Here is a function that determines is the last letter is 'y' (there are other ways to do this but humor us):
+You can have more than one variable created with where. Here is a function that determines if the last letter is 'y' (there are other ways to do this but humor us):
 
 ```
 lastIsY :: String -> Bool
@@ -234,7 +234,7 @@ addThenDouble x = (add x) * 2  -- we pass the x to the local function add
   where add y = y + 4  -- add takes an input
 ```
 
-Just make sure your variable names don't overlap with the parent function's. When you define local functions, the local function's type signature is derived from the parent function's type signature. So since we passed the variable x to add, the compiler knows that add has the type signature of Int -> Int as well. This means the compiler can help you check local variables and functions for errors too.&#x20;
+Just make sure the variable input names in your local functions (in this case y) don't overlap with the parent function's input names (in this case x). While it is technically fine, it can make reading your code harder. When you define local functions, the local function's type signature is derived from the parent function's type signature. So since we passed the variable x to add, the compiler knows that add has the type signature of Int -> Int as well. This means the compiler can help you check local variables and functions for errors too.&#x20;
 
 An important note, you cannot defined local variables with the left facing arrow using where. This means impure variables should be set like in the hello function. Only pure variables can be set with where. Don't confuse this for meaning that where cannot be used in impure functions; that isn't true. For example, here is the hello function from before using where:
 
