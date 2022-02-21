@@ -226,7 +226,7 @@ lastIsY xs = lastLetter == 'y'
         lastLetter = head xs'  -- notice how the indent matches the xs'
 ```
 
-Only one where is needed despite having multiple local variables. Just make sure all of your local variables are indented the same. You can also define local functions with where. Here is a function that adds 2 and then doubles a number:
+Only one where is needed despite having multiple local variables. Just make sure all of your local variables are indented the same. You can also define local functions with where. Here is a function that adds 4 and then doubles a number:
 
 ```
 addThenDouble :: Int -> Int
