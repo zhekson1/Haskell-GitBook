@@ -23,7 +23,7 @@ The main data structures for Haskell are tuples and lists. There are no dictiona
 | Tuple          | A grouping of elements not necessarily of different types. They have a fixed length once set. |                                        (1,2) or (1,"Hello",3.14,'8') |
 | List           |          An array made up of elements of the same type. The array can shrink or grow.         | \[1,2,3] or \['H','e','l','l','o'] or \[(1,"Person1"),(2,"Person2")] |
 
-There are only really two functions in Prelude for working with tuples and they are fst and snd. They just get the first and second element from a tuple pair (length 2) respectively. However there are a lot of useful functions for lists (some you have already seen):
+There are only really two functions in Prelude for working with tuples and they are fst and snd. They just get the first and second element from a tuple pair (length 2) respectively. However there are a lot of useful functions and operators for lists (some you have already seen):
 
 | Function/Operator |         Example - answer after '=>' |
 | ----------------- | ----------------------------------: |
@@ -74,7 +74,7 @@ foo'' :: [Int] -> [Int]  -- this type is different
 foo'' (x:xs) = xs
 ```
 
-Notice how foo' and foo'' have different type signatures despite using the same pattern. This is because of how the function (:) works (see the table above). The x is the first element while the xs is the rest of the list. foo' is the head function from Prelude while foo'' is the tail function. If you wanted to, you can pattern match out more than the first element using (:) like this:
+Notice how foo' and foo'' have different type signatures despite using the same pattern. This is because of how the operator (:) works (see the table above). The x is the first element while the xs is the rest of the list. foo' is the head function from Prelude while foo'' is the tail function. If you wanted to, you can pattern match out more than the first element using (:) like this:
 
 ```
 foo''' :: [Int] -> Int
