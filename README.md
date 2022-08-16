@@ -10,7 +10,7 @@ If ever you get the feeling that all of this is a bit too much, just remember:
 
 > "The journey of 1000 miles begins with a single step" - Lao Tzu
 
-![Lao Tzu](http://www.theprimalthinker.com/wp-content/uploads/2018/04/lao-tzu.jpg](https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/lao-tzu-ralph-taylor.jpg)
+![Lao Tzu](https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/lao-tzu-ralph-taylor.jpg)
 
 Please report any fixes/errors/typos/comments as an issue here: [https://github.com/nomadpool/Haskell-GitBook](https://github.com/nomadpool/Haskell-GitBook)
 
